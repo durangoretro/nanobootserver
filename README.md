@@ -8,10 +8,9 @@ To connect the Raspberry Pi to nanoLink, you need to connect the GPIO 34, 36, an
 
 |  R a s p b e r r y   P i   G P I O |  N A N O L I N K |
 |------------------------------------|------------------|
-| 34                                 | GND              |
-| 36                                 | 16  (CB1, CLOCK) |
-| 38                                 | 20  (CB2, DATA)  |
-| 40                                 | 21  (STB, Not Used)|
+| 34                                 | G  (GND)         |
+| 36                                 | C  (CLOCK)       |
+| 38                                 | D  (DATA)        |
 
 ## Generate Executable
 

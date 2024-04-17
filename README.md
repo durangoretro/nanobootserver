@@ -2,7 +2,7 @@
 
 NanoBoot Server utility for Raspberry Pi; this utility allow us to send a program (ROM) to a Durango using the NanoLink Interface. This utility uses the GPIO on the Raspberry Pi to send the information. 
 
-This utility uses [WiringPi](https://github.com/WiringPi/WiringPi) as library; so you need to install it before compile or use this utility.
+This utility uses [WiringPi](https://github.com/WiringPi/WiringPi) as library; so you need to install it before compile or use this utility; also, you will need the NanoBoot Client Rom at the Durango Computer.
 
 To connect the Raspberry Pi to NanoLink, you need to connect the GPIO 36,38 and 40 to the nanoLink Interface; check the above table for more information:
 

@@ -27,14 +27,21 @@ void sendRom(char *rom, int size);
 
 
 /* *** main code *** */
-int main(void) {
+int main(int argc, char *args[]) {
     FILE*	f;
 	int		i, size;
     char rom[32768];
-    
+
+	if (argc<2)
+	{
+		printf("nanobootServer file\n");
+		return 0;
+	}
+	
+    char *filename = args[1];
     
     /* open source file */
-	if ((f = fopen("./rom.dux", "rb")) == NULL) {
+	if ((f = fopen(filename, "rb")) == NULL) {
 		printf("*** NO SUCH FILE ***\n");
 	}
     

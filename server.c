@@ -25,16 +25,56 @@ void dato(byte x);	/* send data byte at full speed! */
 void useg(int x);	/* delay for specified microseconds */
 
 /* *** main code *** */
-int main(void) {
+int main(int argc,char*  argv[]) {
 	FILE*	f;
 	word	ini, exe, hi, hx;
 	byte	c, bb, tipo;
 	int		fin, i;
-	char	nombre[80];
+	char	nombre[80]; //fileName
+	char nonExecLocalAddress[16]="0x0";//non executable Address (default 0x0)
+	char executeAddress[16]="0x0"; // Execute Address (default 0x0)
 	byte	buffer[256];
+
+	//extern variables
+
+	extern char* optarg;
+
+	//check parameters and options
+
+	if(argc<2){
+		printf("Usage: nanobootServer [options] romfile\n");
+		printf("Options: \n");
+		printf("* -a address: Non-Execution Address.\n");
+		printf("* -x address: Execution Address.\n");
+		return -1;
+	}
+
+	//Get Options Value
+
+	while ((c = getopt(argc, argv, ":a:x:")) != -1) {
+		switch (c)
+		{
+		case 'a':
+			nonExecLocalAddress = optarg;
+			break;
+		case 'x':
+			executeAddress = optarg;
+		default:
+			break;
+		}
+	}
+
+	//File Name
+	nombre=argv[1];
+
+	//read addresses from option parameters and set to word variables
+	sscanf(nonExecLocalAddress,"%x", &ini);
+	sscanf(executeAddress,"%x", &exe);
+
 
 	printf("*** nanoBoot server (OC) ***\n\n");
 	printf("pin 34=GND, 36=CLK, 38=DAT\n\n");
+
 /* GPIO setup */
 	wiringPiSetupGpio();	/* using BCM numbering! */
 	digitalWrite(CB1, 0);	/* clock initially disabled, note OC */
@@ -42,12 +82,12 @@ int main(void) {
 	pinMode(CB2, OUTPUT);
 	pinMode(STB, OUTPUT);	/* not actually used */
 /* open source file */
-	printf("File: ");
-	scanf("%s", nombre);
+
 	if ((f = fopen(nombre, "rb")) == NULL) {
 		printf("*** NO SUCH FILE ***\n");
 		return -1;
 	}
+
 /* compute header parameters */
 	fseek(f, 0, SEEK_END);
 	fin = ftell(f);
@@ -75,12 +115,9 @@ int main(void) {
 		}
 	} else		bb = 1;					/* binary blob might be executed from start */
 /* determine type */
-	printf("\n\nNon-executable Load Address in HEX (0=default): ");
-	scanf("%x", &ini);
+
 	if (!ini) {
 		if (bb) {
-			printf("Execution Address in HEX (0=default): ");
-			scanf("%x", &exe);
 			if (exe)	tipo = 0x4B;		/* binary code blob (legacy) */
 			else {
 				printf("*** Execution address is needed! ***\n");

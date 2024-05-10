@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <wiringPi.h>
 /* *** needs -lwiringPi option *** */
 
@@ -30,9 +31,9 @@ int main(int argc,char*  argv[]) {
 	word	ini, exe, hi, hx;
 	byte	c, bb, tipo;
 	int		fin, i;
-	char	nombre[80]; //fileName
-	char nonExecLocalAddress[16]="0x0";//non executable Address (default 0x0)
-	char executeAddress[16]="0x0"; // Execute Address (default 0x0)
+	char*	nombre; //fileName
+	char* nonExecLocalAddress=NULL;//non executable Address (default 0x0)
+	char* executeAddress=NULL; // Execute Address (default 0x0)
 	byte	buffer[256];
 
 	//extern variables
@@ -50,8 +51,8 @@ int main(int argc,char*  argv[]) {
 	}
 
 	//Get Options Value
-
-	while ((c = getopt(argc, argv, ":a:x:")) != -1) {
+	printf("atata");
+	while ((c = getopt(argc, argv, "a:x:")) != -1) {
 		switch (c)
 		{
 		case 'a':
@@ -63,7 +64,7 @@ int main(int argc,char*  argv[]) {
 			break;
 		}
 	}
-
+	printf("%s: ", argv[1]);
 	//File Name
 	nombre=argv[1];
 
